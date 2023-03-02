@@ -19,8 +19,8 @@ import {
 import { checkSize } from './utils/size-check.js';
 import cors from 'cors';
 import multer from 'multer';
-
-const dbUrl = 'mongodb://localhost:27017/shoes';
+const port = process.env.PORT || 3001;
+const dbUrl = process.env.DB_URI;
 
 const storage = multer.diskStorage({
   destination: (_, __, cb) => {
@@ -42,7 +42,7 @@ mongoose
 const app = express();
 app.use(express.json());
 app.use(cors());
-app.use('/uploads', express.static("uploads"))
+app.use('/uploads', express.static('uploads'));
 
 app.get('/', (req, res) => {
   try {
@@ -77,7 +77,7 @@ app.post('/orders', checkToken, createOrder);
 app.get('/orders', checkToken, getUserOrders);
 app.get('/orders/:id', checkToken, getOneOrder);
 
-app.listen(4444, (err) => {
+app.listen(port, (err) => {
   if (err) {
     return console.log(err);
   }
